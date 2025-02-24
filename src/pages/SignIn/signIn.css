@@ -1,0 +1,67 @@
+.signInMainContent {
+    background: #12002b;
+    height: 30rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.formWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: white;
+    padding: 2rem;
+}
+
+.formTitle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 30%;
+}
+
+.userIcon-signIn {
+    margin-bottom: 1rem;
+    height: 1.2rem;
+}
+
+.formContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 70%;
+}
+
+.inputWrapper-signIn {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+}
+
+.inputWrapper-signIn label {
+    font-weight: bold;
+}
+
+.inputWrapper-signIn input {
+    height: 2rem;
+    width: 15rem;
+}
+
+.checkboxWrapper {
+    margin-top: 1rem;
+}
+
+.checkboxWrapper input {
+    margin-right: 0.5rem;
+}
+
+.signInButton {
+    margin-top: 1rem;
+    height: 2.2rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-decoration: underline;
+    border: none;
+    cursor: pointer;
+}

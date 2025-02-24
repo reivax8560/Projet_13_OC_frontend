@@ -1,0 +1,12 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    color: #2c3e50;
+}
+
+.greenButton {
+    background: #00bc77;
+    color: white;
+    cursor: pointer;
+}

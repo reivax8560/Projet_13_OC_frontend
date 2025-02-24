@@ -1,0 +1,40 @@
+.accountWrapper {
+    background: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 76%;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.accountTitle {
+    font-weight: lighter;
+    font-size: 1rem;
+}
+
+.accountAmount {
+    font-weight: bold;
+    font-size: 2.5rem;
+}
+
+.transactionButton {
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+    font-size: 1.1rem;
+    border-color: #00bc77;
+}
+
+@media (max-width: 720px) {
+
+    .accountWrapper {
+        flex-direction: column;
+        align-items: start;
+    }
+
+    .transactionButton {
+        width: 100%;
+        margin-top: 1rem;
+    }
+
+}

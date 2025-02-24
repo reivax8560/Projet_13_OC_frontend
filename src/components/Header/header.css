@@ -1,0 +1,39 @@
+.mainNav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 4rem;
+}
+
+.homeLink {
+    margin-left: 1rem;
+}
+
+.mainLogo {
+    height: 3.5rem;
+}
+
+.navLinkWrapper {
+    display: flex;
+}
+
+.userIcon-home {
+    font-size: 1.2rem;
+    margin-right: 0.3rem;
+}
+
+.signOutIcon {
+    margin-right: 0.3rem;
+}
+
+.navLink {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    margin-right: 1.5rem;
+    font-weight: bold;
+}
+
+.navLink:hover {
+    text-decoration: underline;
+}

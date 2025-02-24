@@ -1,0 +1,51 @@
+.userMainContent {
+    background: #12002b;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.userNameWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.userNameWrapper h1 {
+    color: white;
+    margin: 1.5rem;
+    text-align: center;
+}
+
+.editButton {
+    padding: 0.6rem;
+    font-weight: bold;
+    border-color: #00bc77;
+    margin-bottom: 2rem;
+}
+
+.editNameWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    display: none;
+}
+
+.editNameForm {
+    margin-bottom: 2rem;
+}
+
+.editNameInput {
+    margin: 0 0.5rem 0.8rem 0.5rem;
+    font-size: 1rem;
+    padding: 0.6rem;
+}
+
+.editNameButton {
+    height: 1.7rem;
+    width: 7rem;
+    font-weight: bold;
+    border-color: #00bc77;
+    margin: 0 0.5rem 0 0.5rem;
+}
