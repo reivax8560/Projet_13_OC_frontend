@@ -14,35 +14,31 @@ export default function SignIn() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-
-    const emailOnChange = (e) => {
-        setEmail(e.target.value)
-    }
-    const passwordOnChange = (e) => {
-        setPassword(e.target.value)
-    }
+    const [signinError, setSigninError] = useState(false)
 
     const onSubmit = (e) => {
         e.preventDefault()
-        const credentials = { email, password };
+        const email = e.currentTarget.email.value
+        const password = e.currentTarget.password.value
+        const credentials = { email, password }
+        const rememberMe = e.currentTarget.rememberMe.checked
+
         getToken(credentials)
             .then((response) => {
-                // SI ERROR PASSER ISLOGGED A FALSE + MESSAGE ERREUR
-                if (response.message) {
-                    dispatch({ type: 'SET_ISLOGGED_FALSE', payload: false })
-                    console.log(response.message)
+                if (response.message) {     ////////////////////// GERER LES ERREURS 400 ET 500
+                    dispatch({ type: 'SET_ISLOGGED', payload: false })
+                    setSigninError(true)
                 }
-                // SINON STOCKER TOKEN DANS STORE
                 else {
-                    dispatch({ type: 'ADD_TOKEN', payload: response })
-                    dispatch({ type: 'SET_ISLOGGED_TRUE', payload: true })
+                    dispatch({ type: 'SET_TOKEN', payload: response })
+                    // dispatch({ type: 'SET_ISLOGGED', payload: true })
+                    if (rememberMe) {
+                        localStorage.setItem("token", response)
+                    }
                     navigate("/user-page")
                 }
             })
     }
-
 
 
     return (
@@ -63,26 +59,33 @@ export default function SignIn() {
                         <div className='inputWrapper-signIn'>
                             <label htmlFor="email">email</label>
                             <input
-                                onChange={emailOnChange}
-                                value={email}
                                 type="text"
                                 name="email"
-                                id='email' />
+                                id='email'
+                            />
                         </div>
                         <div className='inputWrapper-signIn'>
                             <label htmlFor="password">Password</label>
                             <input
-                                onChange={passwordOnChange}
-                                value={password}
                                 type="text"
                                 name="password"
-                                id='password' />
+                                id='password'
+                            />
                         </div>
                         <div className='checkboxWrapper'>
-                            <input type="checkbox" name="remember" />
-                            <label>Remember me</label>
+                            <input
+                                type="checkbox"
+                                id='rememberMe'
+                                name="rememberMe"
+                            />
+                            <label htmlFor='rememberMe'>Remember me</label>
                         </div>
                         <button type="submit" className="signInButton">Sign In</button>
+                        {signinError &&
+                            <span className='signinError'>
+                                Invalid credentials, please try again !
+                            </span>
+                        }
                     </form>
 
                 </section>

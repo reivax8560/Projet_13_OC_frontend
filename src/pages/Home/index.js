@@ -7,9 +7,36 @@ import moneyIcon from '../../assets/icon_money.png'
 import securityIcon from '../../assets/icon_security.png'
 import { promiseChat_title, promiseChat_text, promiseMoney_title, promiseMoney_text, promiseSecurity_title, promiseSecurity_text } from '../../utils/text'
 import './home.css'
+import { useEffect } from 'react';
+import { useDispatch } from "react-redux";
+import { getUserDatas } from '../../api/api';
+
 
 
 export default function Home() {
+
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        if (localStorage.token) {
+            const userToken = localStorage.getItem("token")
+            getUserDatas(userToken)
+                .then((userDatas) => {
+                    if (userDatas.status === 200) {
+                        dispatch({ type: 'SET_TOKEN', payload: userToken })
+                        dispatch({ type: 'SET_FIRSTNAME', payload: userDatas?.body?.firstName })
+                        dispatch({ type: 'SET_LASTNAME', payload: userDatas?.body?.lastName })
+                        dispatch({ type: 'SET_EMAIL', payload: userDatas?.body?.email })
+                        dispatch({ type: 'SET_ISLOGGED', payload: true })
+                    }
+                    // else {
+                    //     setIsPageOnError(true)
+                    //     setErrorMessage(userDatas.message)
+                    // }
+                })
+        }
+    }, [])
+
 
     return (
         <div className="home">

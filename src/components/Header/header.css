@@ -32,8 +32,13 @@
     align-items: center;
     margin-right: 1.5rem;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .navLink:hover {
     text-decoration: underline;
+}
+
+.loggedInNavLinkWrapper {
+    display: flex;
 }

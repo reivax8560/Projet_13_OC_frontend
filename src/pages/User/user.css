@@ -25,13 +25,6 @@
     margin-bottom: 2rem;
 }
 
-.editNameWrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    display: none;
-}
-
 .editNameForm {
     margin-bottom: 2rem;
 }
@@ -48,4 +41,13 @@
     font-weight: bold;
     border-color: #00bc77;
     margin: 0 0.5rem 0 0.5rem;
+}
+
+.inputWrapper-user {
+    display: flex;
+}
+
+.buttonWrapper {
+    display: flex;
+    justify-content: center;
 }
