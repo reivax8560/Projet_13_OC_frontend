@@ -31,7 +31,7 @@ export default function SignIn() {
                 }
                 else {
                     dispatch({ type: 'SET_TOKEN', payload: response })
-                    // dispatch({ type: 'SET_ISLOGGED', payload: true })
+                    dispatch({ type: 'SET_ISLOGGED', payload: true })
                     if (rememberMe) {
                         localStorage.setItem("token", response)
                     }

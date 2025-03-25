@@ -24,11 +24,10 @@ export default function User() {
     const userLogged = useSelector(isUserLogged)
 
     useEffect(() => {
-        if (!userLogged) {
+        if (userLogged) {
             getUserDatas(userToken)
                 .then((userDatas) => {
                     if (userDatas.status === 200) {
-                        dispatch({ type: 'SET_ISLOGGED', payload: true })
                         dispatch({ type: 'SET_FIRSTNAME', payload: userDatas?.body?.firstName })
                         dispatch({ type: 'SET_LASTNAME', payload: userDatas?.body?.lastName })
                         dispatch({ type: 'SET_EMAIL', payload: userDatas?.body?.email })
@@ -45,10 +44,13 @@ export default function User() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const newFirstName = e.currentTarget.firstName.value;
-        const newLastName = e.currentTarget.lastName.value;
 
-        updateName(userToken, newFirstName, newLastName)
+        const dataToSend = {
+            firstName: e.target.firstName.value,
+            lastName: e.target.lastName.value,
+        };
+
+        updateName(userToken, dataToSend)
             .then((response) => {
                 console.log(response)
                 if (response.status !== 200) {
@@ -56,8 +58,8 @@ export default function User() {
                     setEditErrorMessage(response.message)
                 }
             })
-        dispatch({ type: 'SET_FIRSTNAME', payload: newFirstName })
-        dispatch({ type: 'SET_LASTNAME', payload: newLastName })
+        dispatch({ type: 'SET_FIRSTNAME', payload: e.target.firstName.value })
+        dispatch({ type: 'SET_LASTNAME', payload: e.target.lastName.value })
 
         // if (newFirstName !== firstName && newFirstName !== "") {
         //     dispatch({ type: 'SET_FIRSTNAME', payload: newFirstName })
@@ -65,15 +67,7 @@ export default function User() {
         // if (newLastName !== lastName && newLastName !== "") {
         //     dispatch({ type: 'SET_LASTNAME', payload: newLastName })
         // }
-        // // console.log(firstName)
-        // updateName(userToken, firstName, lastName)  //////////////////////// A REVOIR
-        //     .then((response) => {
-        //         console.log(response)
-        //         if (response.status !== 200) {
-        //             setIsEditOnError(true)
-        //             setEditErrorMessage(response.message)
-        //         }
-        //     })
+
     };
 
 
@@ -100,6 +94,12 @@ export default function User() {
 
                     {isEditEnabled &&
                         <form onSubmit={handleSubmit} className='editNameForm'>
+                            {isEditOnError &&
+                                <span className='editError'>
+                                    {editErrorMessage}
+                                </span>
+                            }
+
                             <div className='inputWrapper-user'>
                                 <input
                                     type="text"

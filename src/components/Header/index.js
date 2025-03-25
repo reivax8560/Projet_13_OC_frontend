@@ -18,9 +18,15 @@ export default function Header() {
 
 
     const onSignOut = () => {
-        dispatch({ type: 'SET_TOKEN', payload: ('') })
+        dispatch({ type: 'SET_TOKEN', payload: '' })
         dispatch({ type: 'SET_ISLOGGED', payload: false })
-        localStorage.removeItem("token")
+        dispatch({ type: 'SET_FIRSTNAME', payload: "" })
+        dispatch({ type: 'SET_LASTNAME', payload: "" })
+        dispatch({ type: 'SET_EMAIL', payload: "" })
+
+        if (localStorage.token) {
+            localStorage.removeItem("token")
+        }
         navigate("/")
     }
 
