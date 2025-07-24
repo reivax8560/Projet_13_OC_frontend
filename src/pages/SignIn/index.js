@@ -6,6 +6,7 @@ import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { setUserAuthentication } from '../../features/authSlice'
 import getToken from '../../api/auth';
 
 
@@ -25,17 +26,22 @@ export default function SignIn() {
 
         getToken(credentials)
             .then((response) => {
-                if (response.message) {     ////////////////////// GERER LES ERREURS 400 ET 500
-                    dispatch({ type: 'SET_ISLOGGED', payload: false })
+                if (response.message) {
+                    dispatch(setUserAuthentication({
+                        token: '', 
+                        isLogged: false
+                    }))
                     setSigninError(true)
                 }
                 else {
-                    dispatch({ type: 'SET_TOKEN', payload: response })
-                    dispatch({ type: 'SET_ISLOGGED', payload: true })
+                    dispatch(setUserAuthentication({
+                        token: response, 
+                        isLogged: true
+                    }))
                     if (rememberMe) {
                         localStorage.setItem("token", response)
                     }
-                    navigate("/user-page")
+                    navigate("/user-profile")
                 }
             })
     }

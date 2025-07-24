@@ -1,14 +1,12 @@
 import { Outlet, createBrowserRouter, ScrollRestoration } from 'react-router-dom';
 import Home from '../pages/Home'
 import SignIn from '../pages/SignIn';
-import User from '../pages/User';
-import Transactions from '../pages/Transactions';
+import Profile from '../pages/Profile';
 
 export const router = createBrowserRouter([
     {
         path: "/",
         element: <Root />,
-        // errorElement: <Error />,
         children: [
             {
                 path: "",
@@ -19,19 +17,11 @@ export const router = createBrowserRouter([
                 element: <SignIn />,
             },
             {
-                path: "user-page",
-                element: <User />,
-            },
-            {
-                path: "transactions",
-                element: <Transactions />,
+                path: "user-profile",
+                element: <Profile />,
             },
         ]
     },
-    // {
-    //     path: "*",
-    //     element: <Error />,
-    // },
 ]);
 
 function Root() {
@@ -39,5 +29,4 @@ function Root() {
         <Outlet />
         <ScrollRestoration />
     </>
-
 }

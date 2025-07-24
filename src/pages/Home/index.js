@@ -8,30 +8,39 @@ import securityIcon from '../../assets/icon_security.png'
 import { promiseChat_title, promiseChat_text, promiseMoney_title, promiseMoney_text, promiseSecurity_title, promiseSecurity_text } from '../../utils/text'
 import './home.css'
 import { useEffect, useState } from 'react';
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { getUserDatas } from '../../api/api';
-
+import { setUserAuthentication } from '../../features/authSlice'
+import { setUserDatas } from '../../features/profileSlice'
+import { getEmail } from "../../app/selectors";
 
 
 export default function Home() {
 
     const dispatch = useDispatch()
 
+    const email = useSelector(getEmail)
+
     const [isHomePageOnError, setIsHomePageOnError] = useState(false)
     const [homePageErrorMessage, setHomePageErrorMessage] = useState("")
 
 
     useEffect(() => {
-        if (localStorage.token) {
+        ///////////////////////////////////////////////////////////// CONNEXION INITIALE SI REMEMBER ME COCHÉ
+        if (localStorage.token && email === "") {
             const userToken = localStorage.getItem("token")
             getUserDatas(userToken)
                 .then((userDatas) => {
                     if (userDatas.status === 200) {
-                        dispatch({ type: 'SET_ISLOGGED', payload: true })
-                        dispatch({ type: 'SET_TOKEN', payload: userToken })
-                        dispatch({ type: 'SET_FIRSTNAME', payload: userDatas?.body?.firstName })
-                        dispatch({ type: 'SET_LASTNAME', payload: userDatas?.body?.lastName })
-                        dispatch({ type: 'SET_EMAIL', payload: userDatas?.body?.email })
+                        dispatch(setUserAuthentication({
+                            token: userToken, 
+                            isLogged: true
+                        }))
+                        dispatch(setUserDatas({
+                            firstName: userDatas?.body?.firstName, 
+                            lastName: userDatas?.body?.lastName,
+                            email: userDatas?.body?.email
+                        }))
                     }
                     else {
                         setIsHomePageOnError(true)
@@ -39,7 +48,7 @@ export default function Home() {
                     }
                 })
         }
-    }, [dispatch])
+    }, [dispatch, email])
 
 
     return (

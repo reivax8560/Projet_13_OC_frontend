@@ -6,6 +6,8 @@ import { isUserLogged, getFirstName } from "../../app/selectors";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import './header.css'
+import { setUserAuthentication } from '../../features/authSlice'
+import { setUserDatas } from '../../features/profileSlice'
 
 
 export default function Header() {
@@ -18,11 +20,12 @@ export default function Header() {
 
 
     const onSignOut = () => {
-        dispatch({ type: 'SET_TOKEN', payload: '' })
-        dispatch({ type: 'SET_ISLOGGED', payload: false })
-        dispatch({ type: 'SET_FIRSTNAME', payload: "" })
-        dispatch({ type: 'SET_LASTNAME', payload: "" })
-        dispatch({ type: 'SET_EMAIL', payload: "" })
+        dispatch(setUserAuthentication({token: '', isLogged: false}))
+        dispatch(setUserDatas({
+            firstName: '', 
+            lastName: '',
+            email: ''
+        }))
 
         if (localStorage.token) {
             localStorage.removeItem("token")
@@ -50,15 +53,10 @@ export default function Header() {
                     {
                         userLogged &&
                         <div className='loggedInNavLinkWrapper'>
-                            <NavLink to="/user-page" className='navLink'>
+                            <NavLink to="/user-profile" className='navLink'>
                                 <FontAwesomeIcon icon={faCircleUser} className='userIcon-home' />
                                 {firstName}
                             </NavLink>
-
-                            {/* <NavLink to="/" className='navLink'>
-                                <FontAwesomeIcon onClick={handleSignOut} icon={faRightFromBracket} className='signOutIcon' />
-                                Sign Out
-                            </NavLink> */}
 
                             <div onClick={onSignOut} className='navLink'>
                                 <FontAwesomeIcon icon={faRightFromBracket} className='signOutIcon' />

@@ -1,11 +1,13 @@
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useEffect } from 'react';
 import AccountCard from '../../components/AccountCard'
 import { useSelector, useDispatch } from "react-redux";
-import { getUserToken, getFirstName, getLastName, isUserLogged } from "../../app/selectors";
+import { getUserToken, getFirstName, getLastName, isUserLogged, getEmail } from "../../app/selectors";
 import { getUserDatas, updateName } from '../../api/api';
-import './user.css'
+import './profile.css'
+import { setUserDatas } from '../../features/profileSlice'
 
 
 export default function User() {
@@ -17,20 +19,25 @@ export default function User() {
     const [isEditEnabled, setIsEditEnable] = useState(false)
     const [isEditOnError, setIsEditOnError] = useState(false)
     const [editErrorMessage, setEditErrorMessage] = useState("")
+    const [formData, setFormData] = useState({firstName: '', lastName: ''})
 
     const userToken = useSelector(getUserToken)
     const firstName = useSelector(getFirstName)
     const lastName = useSelector(getLastName)
     const userLogged = useSelector(isUserLogged)
+    const email = useSelector(getEmail)
 
     useEffect(() => {
-        if (userLogged) {
+        //////////////////////////////////////////////// RÉCUPÉRATION DES DATAS USER QUAND REMEMBER ME NON COCHÉ
+        if (userLogged && email === "") {
             getUserDatas(userToken)
                 .then((userDatas) => {
                     if (userDatas.status === 200) {
-                        dispatch({ type: 'SET_FIRSTNAME', payload: userDatas?.body?.firstName })
-                        dispatch({ type: 'SET_LASTNAME', payload: userDatas?.body?.lastName })
-                        dispatch({ type: 'SET_EMAIL', payload: userDatas?.body?.email })
+                        dispatch(setUserDatas({
+                            firstName: userDatas?.body?.firstName, 
+                            lastName: userDatas?.body?.lastName,
+                            email: userDatas?.body?.email
+                        }))
                     }
                     else {
                         setIsPageOnError(true)
@@ -38,38 +45,36 @@ export default function User() {
                     }
                 })
         }
-    }, [dispatch, userLogged, userToken])
+    }, [dispatch, userLogged, userToken, email])
+
+    //////////////////////////////////////////////// RÉCUPÉRATION DES DATAS USER QUAND REMEMBER ME NON COCHÉ
+    useEffect(() => {
+        setFormData({firstName, lastName})
+    }, [firstName, lastName])
 
 
-
+    //////////////////////////////////////// SOUMISSION FORM EDIT NAME
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        const dataToSend = {
-            firstName: e.target.firstName.value,
-            lastName: e.target.lastName.value,
-        };
-
-        updateName(userToken, dataToSend)
+        updateName(userToken, formData)
             .then((response) => {
-                console.log(response)
                 if (response.status !== 200) {
                     setIsEditOnError(true)
                     setEditErrorMessage(response.message)
                 }
+                setIsEditEnable(false)
             })
-        dispatch({ type: 'SET_FIRSTNAME', payload: e.target.firstName.value })
-        dispatch({ type: 'SET_LASTNAME', payload: e.target.lastName.value })
-
-        // if (newFirstName !== firstName && newFirstName !== "") {
-        //     dispatch({ type: 'SET_FIRSTNAME', payload: newFirstName })
-        // }
-        // if (newLastName !== lastName && newLastName !== "") {
-        //     dispatch({ type: 'SET_LASTNAME', payload: newLastName })
-        // }
-
+        dispatch(setUserDatas({
+            firstName: formData.firstName, 
+            lastName: formData.lastName, 
+            email: email}))
     };
 
+    //////////////////////////////////////// RECUP VALEUR INPUT DANS STATE
+    const handleChange = (e) => {
+        const {name, value } = e.target
+        setFormData({...formData, [name]: value})
+    }
 
     return (
 
@@ -93,7 +98,7 @@ export default function User() {
                     }
 
                     {isEditEnabled &&
-                        <form onSubmit={handleSubmit} className='editNameForm'>
+                        <div className='editNameForm'>
                             {isEditOnError &&
                                 <span className='editError'>
                                     {editErrorMessage}
@@ -104,24 +109,26 @@ export default function User() {
                                 <input
                                     type="text"
                                     name="firstName"
-                                    placeholder={firstName}
+                                    value={formData.firstName}
+                                    onChange={handleChange}
                                     className='editNameInput'
                                 />
                                 <input
                                     type="text"
                                     name="lastName"
-                                    placeholder={lastName}
+                                    value={formData.lastName}
+                                    onChange={handleChange}
                                     className='editNameInput'
                                 />
                             </div>
                             <div className='buttonWrapper'>
-                                <button type='submit' className="greenButton editNameButton">Save</button>
-                                <button onClick={() => setIsEditEnable(false)} className="greenButton editNameButton">Cancel</button>
+                                <button  onClick={handleSubmit} className="greenButton editNameButton">Save</button>
+                                <button onClick={() => {setIsEditEnable(false)}} className="greenButton editNameButton">Cancel</button>
                             </div>
-                        </form>
+                        </div>
                     }
                     {!isEditEnabled &&
-                        <button onClick={() => setIsEditEnable(true)} className="greenButton editButton" >Edit Name</button>
+                        <button onClick={() => {setIsEditEnable(true)} } className="greenButton editButton" >Edit Name</button>
                     }
                 </div>
 

@@ -1,4 +1,3 @@
-import { NavLink } from 'react-router-dom'
 import './accountCard.css'
 
 export default function AccountCard() {
@@ -13,14 +12,9 @@ export default function AccountCard() {
                 <p className='accountDescription'>Available Balance</p>
             </div>
 
-            {/* <div className='transactionButtonWrapper'> */}
-            <NavLink to="/transactions" >
                 <button className='greenButton transactionButton'>
                     View transactions
                 </button>
-            </NavLink>
-
-            {/* </div> */}
 
         </section>
 

@@ -7,10 +7,6 @@ export async function getUserDatas(token) {
             headers: {
                 Authorization: `Bearer ${token}`
             }
-            // headers: {
-            //     'Content-Type': 'application/json',
-            //     Authorization: `Bearer ${token}`
-            // }
         });
         if (!response.ok) {
             throw new Error(`Erreur ${response.status} : ${response.statusText}`)
@@ -24,7 +20,7 @@ export async function getUserDatas(token) {
     }
 }
 
-export async function updateName(token, dataToSend) {
+export async function updateName(token, name) {
 
 
     try {
@@ -34,7 +30,7 @@ export async function updateName(token, dataToSend) {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify(dataToSend)
+            body: JSON.stringify(name)
         });
         if (!response.ok) {
             throw new Error(`Erreur ${response.status} : ${response.statusText}`)
