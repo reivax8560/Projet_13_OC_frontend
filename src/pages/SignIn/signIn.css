@@ -65,3 +65,9 @@
     border: none;
     cursor: pointer;
 }
+
+.signinError {
+    color: red;
+    font-weight: bold;
+    margin: 1rem auto 1rem auto;
+}
